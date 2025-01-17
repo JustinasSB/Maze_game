@@ -3,7 +3,7 @@ extends CharacterBody3D
 @onready var Head = get_node("%Head")
 @onready var Footstep = $Audio/Footstep
 @onready var Pickup =  $Audio/Pick_up
-var collectible = preload("res://Collectible.tscn")
+var collectible = preload("res://Scenes/Collectible.tscn")
 
 
 const SPEED = 5.0

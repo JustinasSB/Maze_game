@@ -1,9 +1,9 @@
 extends Node3D
 
-var wall_prefab = preload("res://Wall.tscn")
-var collectible = preload("res://Collectible.tscn")
-var pedestal = preload("res://Pedestal.tscn")
-var end_game_trigger = preload("res://end_game_trigger.tscn")
+var wall_prefab = preload("res://Scenes/Wall.tscn")
+var collectible = preload("res://Scenes/Collectible.tscn")
+var pedestal = preload("res://Scenes/Pedestal.tscn")
+var end_game_trigger = preload("res://Scenes/end_game_trigger.tscn")
 var maze_size
 var collectible_location
 var collectibles_collected:int = 0
@@ -216,7 +216,7 @@ func _on_area_3d_area_entered(area: Area3D) -> void:
 
 func _on_end_game_trigger_entered(area: Area3D) -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	get_tree().change_scene_to_file("res://gameover.tscn")
+	get_tree().change_scene_to_file("res://Scenes/gameover.tscn")
 
 func set_player(player_node: CharacterBody3D) -> void:
 	player = player_node

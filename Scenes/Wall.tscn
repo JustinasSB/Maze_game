@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b8sae6567paei" path="res://textures/Terrain2/sandy_gravel_02_diff_4k.png" id="1_8mtkm"]
 [ext_resource type="Texture2D" uid="uid://dcyprqlimrgt6" path="res://textures/Walls/bembridge-antique-staggered-675-mm-architextures.jpg" id="1_b70k7"]
-[ext_resource type="Shader" path="res://Wall_shader.gdshader" id="1_tlbxs"]
+[ext_resource type="Shader" path="res://Shaders/Wall_shader.gdshader" id="1_tlbxs"]
 [ext_resource type="Texture2D" uid="uid://neethgd5lw24" path="res://textures/Walls/mossy_brick_nor_gl_4k.png" id="2_iehow"]
 [ext_resource type="Texture2D" uid="uid://3g1wj0vop7gr" path="res://textures/Walls/mossy_brick_rough_4k.png" id="3_3p66f"]
 [ext_resource type="Texture2D" uid="uid://m2i3aaytmlr1" path="res://textures/Terrain2/sandy_gravel_02_nor_gl_4k.png" id="5_6bmfb"]
