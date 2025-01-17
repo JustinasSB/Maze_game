@@ -1,0 +1,65 @@
+[gd_scene load_steps=13 format=3 uid="uid://1svaqajxsleu"]
+
+[ext_resource type="Texture2D" uid="uid://b8sae6567paei" path="res://textures/Terrain2/sandy_gravel_02_diff_4k.png" id="1_8mtkm"]
+[ext_resource type="Texture2D" uid="uid://dcyprqlimrgt6" path="res://textures/Walls/bembridge-antique-staggered-675-mm-architextures.jpg" id="1_b70k7"]
+[ext_resource type="Shader" path="res://Wall_shader.gdshader" id="1_tlbxs"]
+[ext_resource type="Texture2D" uid="uid://neethgd5lw24" path="res://textures/Walls/mossy_brick_nor_gl_4k.png" id="2_iehow"]
+[ext_resource type="Texture2D" uid="uid://3g1wj0vop7gr" path="res://textures/Walls/mossy_brick_rough_4k.png" id="3_3p66f"]
+[ext_resource type="Texture2D" uid="uid://m2i3aaytmlr1" path="res://textures/Terrain2/sandy_gravel_02_nor_gl_4k.png" id="5_6bmfb"]
+[ext_resource type="Texture2D" uid="uid://b2rx0haf6qjqg" path="res://textures/Terrain2/sandy_gravel_02_rough_4k.png" id="7_h0o1w"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_77y1w"]
+size = Vector3(2, 1, 2)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hij16"]
+frequency = 0.0108
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t6w47"]
+seamless = true
+noise = SubResource("FastNoiseLite_hij16")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wmxgt"]
+render_priority = 0
+shader = ExtResource("1_tlbxs")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/albedo_alt = Color(1, 1, 1, 1)
+shader_parameter/roughness = 1.0
+shader_parameter/roughness_alt = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/metallic_texture_channel_alt = null
+shader_parameter/specular = 0.5
+shader_parameter/specular_alt = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/metallic_alt = null
+shader_parameter/normal_scale = 2.0
+shader_parameter/normal_scale_alt = 1.0
+shader_parameter/uv1_scale = Vector3(3, 6, 3)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/object_size = Vector3(2, 5, 2)
+shader_parameter/spread = 6.84
+shader_parameter/intensity = 1.175
+shader_parameter/height_offset = 2.0
+shader_parameter/only_endFactor = false
+shader_parameter/texture_albedo = ExtResource("1_b70k7")
+shader_parameter/texture_albedo_alt = ExtResource("1_8mtkm")
+shader_parameter/texture_roughness = ExtResource("3_3p66f")
+shader_parameter/texture_roughness_alt = ExtResource("7_h0o1w")
+shader_parameter/texture_normal = ExtResource("2_iehow")
+shader_parameter/texture_normal_alt = ExtResource("5_6bmfb")
+shader_parameter/noise = SubResource("NoiseTexture2D_t6w47")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oekue"]
+size = Vector3(2, 1, 2)
+
+[node name="WallBody" type="StaticBody3D"]
+
+[node name="WallMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_77y1w")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_wmxgt")
+
+[node name="WallCollision" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_oekue")

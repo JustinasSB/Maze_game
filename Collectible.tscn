@@ -1,0 +1,48 @@
+[gd_scene load_steps=11 format=3 uid="uid://ci1b2avh2ggql"]
+
+[ext_resource type="Texture2D" uid="uid://3sqh5ioy5b3r" path="res://textures/Collectible/paper_0010_color_1k.jpg" id="1_gsedq"]
+[ext_resource type="Texture2D" uid="uid://juhvi3p6ssct" path="res://textures/Collectible/paper_0010_ao_1k.jpg" id="2_uv3bu"]
+[ext_resource type="Texture2D" uid="uid://b2atx35685f35" path="res://textures/Collectible/paper_0010_height_1k.png" id="3_qgvvk"]
+[ext_resource type="Texture2D" uid="uid://beh5kbncnvn2s" path="res://textures/Collectible/paper_0010_normal_opengl_1k.png" id="4_tve8f"]
+[ext_resource type="Texture2D" uid="uid://b12n5ci8dw2k3" path="res://textures/Collectible/paper_0010_roughness_1k.jpg" id="5_ixj5y"]
+[ext_resource type="AudioStream" uid="uid://sp06ouq27x6i" path="res://Audio/Chime/Collectible_chime.mp3" id="6_dnvqe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gs7ai"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xh1hu"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1sitr"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sm1r8"]
+albedo_texture = ExtResource("1_gsedq")
+roughness_texture = ExtResource("5_ixj5y")
+normal_enabled = true
+normal_texture = ExtResource("4_tve8f")
+ao_enabled = true
+ao_texture = ExtResource("2_uv3bu")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_qgvvk")
+
+[node name="RigidBody3D" type="RigidBody3D"]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_gs7ai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xh1hu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("BoxMesh_1sitr")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_sm1r8")
+
+[node name="Chime" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_dnvqe")
+autoplay = true
+max_distance = 25.0
+parameters/looping = true

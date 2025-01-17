@@ -1,0 +1,202 @@
+[gd_scene load_steps=25 format=3 uid="uid://be5hj7680ce5j"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_jxefc"]
+[ext_resource type="Script" path="res://Scripts/character.gd" id="1_mdojl"]
+[ext_resource type="AudioStream" uid="uid://ct015d3yyvdy5" path="res://Audio/Background/Calm_wind.mp3" id="3_l584d"]
+[ext_resource type="AudioStream" uid="uid://dyugd4wnec34v" path="res://Audio/Footsteps/Sand.mp3" id="3_lutji"]
+[ext_resource type="AudioStream" uid="uid://dglj7pro64l8a" path="res://Audio/Pick_up/arcade-ui-6-229503.mp3" id="4_ony8q"]
+[ext_resource type="Script" path="res://Scripts/maze.gd" id="4_y1734"]
+[ext_resource type="Script" path="res://addons/infinite_heightmap_terrain/infinite_terrain.gd" id="5_hpmmn"]
+[ext_resource type="Texture2D" uid="uid://b8sae6567paei" path="res://textures/Terrain2/sandy_gravel_02_diff_4k.png" id="6_h7tcv"]
+[ext_resource type="Texture2D" uid="uid://b2rx0haf6qjqg" path="res://textures/Terrain2/sandy_gravel_02_rough_4k.png" id="7_n701s"]
+[ext_resource type="Texture2D" uid="uid://m2i3aaytmlr1" path="res://textures/Terrain2/sandy_gravel_02_nor_gl_4k.png" id="7_rkycd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_r6qdk"]
+radius = 0.25
+height = 1.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rse3q"]
+size = Vector3(0.5, 0.1, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ea3en"]
+size = Vector3(0.6, 1.7, 0.6)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cpur5"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gl4d6"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7p34j"]
+frequency = 0.0024
+
+[sub_resource type="Curve" id="Curve_c1m3c"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Shader" id="Shader_1syif"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
+uniform float normal_scale : hint_range(-16.0, 16.0);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+void vertex() {
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+
+	// Normal Map: Enabled
+	NORMAL_MAP = texture(texture_normal, base_uv).rgb;
+	NORMAL_MAP_DEPTH = normal_scale;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xq2t0"]
+render_priority = 0
+shader = SubResource("Shader_1syif")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = Vector3(60, 60, 60)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("6_h7tcv")
+shader_parameter/texture_roughness = ExtResource("7_n701s")
+shader_parameter/texture_normal = ExtResource("7_rkycd")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7x33h"]
+render_priority = 0
+shader = SubResource("Shader_1syif")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = Vector3(60, 60, 60)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("6_h7tcv")
+shader_parameter/texture_roughness = ExtResource("7_n701s")
+shader_parameter/texture_normal = ExtResource("7_rkycd")
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_0gqln"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s1kur"]
+sky_curve = 0.738686
+sky_energy_multiplier = 1.5
+ground_curve = 0.351199
+
+[sub_resource type="Sky" id="Sky_auug5"]
+sky_material = SubResource("ProceduralSkyMaterial_s1kur")
+
+[sub_resource type="Environment" id="Environment_s627t"]
+background_mode = 2
+sky = SubResource("Sky_auug5")
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_jxefc")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.0170371, -0.982963, -0.183013, -0.183013, -0.183013, 0.965926, -0.982963, 0.0170371, -0.183013, 0, 0, 0)
+
+[node name="Character" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+script = ExtResource("1_mdojl")
+
+[node name="Body" type="CollisionShape3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_r6qdk")
+
+[node name="Head" type="Camera3D" parent="Character"]
+unique_name_in_owner = true
+transform = Transform3D(0.97237, 0.132225, -0.192388, 0, 0.824126, 0.566406, 0.233445, -0.550756, 0.801355, 0, 1.7, 0)
+current = true
+fov = 80.0
+
+[node name="Feet" type="CollisionShape3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_rse3q")
+
+[node name="Area3D" type="Area3D" parent="Character"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("BoxShape3D_ea3en")
+
+[node name="Audio" type="Node3D" parent="Character"]
+
+[node name="Footstep" type="AudioStreamPlayer3D" parent="Character/Audio"]
+stream = ExtResource("3_lutji")
+
+[node name="Background" type="AudioStreamPlayer" parent="Character/Audio"]
+stream = ExtResource("3_l584d")
+autoplay = true
+parameters/looping = false
+
+[node name="Pick_up" type="AudioStreamPlayer3D" parent="Character/Audio"]
+stream = ExtResource("4_ony8q")
+
+[node name="MazeGenerator" type="Node3D" parent="."]
+script = ExtResource("4_y1734")
+
+[node name="Terrain" type="StaticBody3D" parent="."]
+disable_mode = 2
+physics_material_override = SubResource("PhysicsMaterial_cpur5")
+script = ExtResource("5_hpmmn")
+terrain_noise = SubResource("FastNoiseLite_gl4d6")
+terrain_noise_large = SubResource("FastNoiseLite_7p34j")
+terrain_large_function = 1
+terrain_height_multiplier = 1.0
+terrain_color_steepness_curve = SubResource("Curve_c1m3c")
+terrain_material = SubResource("ShaderMaterial_xq2t0")
+bigmesh_material = SubResource("ShaderMaterial_7x33h")
+
+[node name="Area3D" type="Area3D" parent="Terrain"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Area3D"]
+shape = SubResource("HeightMapShape3D_0gqln")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain"]
+shape = SubResource("HeightMapShape3D_0gqln")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_s627t")
